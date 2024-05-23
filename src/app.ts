@@ -1,6 +1,7 @@
 import { env } from 'process';
 import { evns } from './config/envs';
 import { Server } from './presentacion/server';
+import { AppRoutes } from './presentacion/routes';
 
 
 ( async() =>{
@@ -15,6 +16,7 @@ function main(){
         
         port: evns.PORT,
         public_path:evns.PUBLIC_PATH,
+        routes: AppRoutes.routes,
     });
         server.start();
 }

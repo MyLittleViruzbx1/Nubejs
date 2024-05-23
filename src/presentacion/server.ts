@@ -1,28 +1,29 @@
 
-import express from 'express';
+import express, { Router } from 'express';
 import path from 'path';
 
 
 interface Options {
     port:number;
-    public_path?: string
+    public_path?: string;
+    routes: Router;
 }
 
 
 export class Server {
 
     private app = express();
-    
-
     private readonly port: number;
-    private readonly publicpath: string
+    private readonly publicpath: string;
+    private readonly routes: Router;
     
     constructor(options: Options) {
 
-        const {port,public_path = 'public'} = options;
+        const {port, routes, public_path = 'public'} = options;
         
         this.port = port;
         this.publicpath = public_path;
+        this.routes = routes;
     }
 
 
@@ -37,14 +38,9 @@ export class Server {
 this.app.use(express.static(this.publicpath) );
 
 
-this.app.get('/api/todos', (req, res) =>{
-    res.json([
-        {id:1, text:'Buy milk', createdAt: new Date()},
-        {id:2, text:'Buy bread', createdAt: null},
-        {id:3, text:'Buy sugar', createdAt: new Date()}
-    ])
-})
 
+        // Routes
+        this.app.use(this.routes);
 
 
 
